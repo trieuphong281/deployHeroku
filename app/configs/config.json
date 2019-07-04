@@ -1,5 +1,5 @@
 ﻿{
-    "connectionString": "mongodb+srv://user01:haauj123@musicapp-ne6z0.gcp.mongodb.net/music-app?retryWrites=true&w=majority",
+    "connectionString": "mongodb://vuong:vuong123@ds263161.mlab.com:63161/music-app",
     "secret": "MUSIC WEBSITE OF THE COMPANY - Made by Summer Interns in 2019",
     "refreshTokenSecret": "Refresh Token for MUSIC WEBSITE OF THE COMPANY",
     "baseUrl": "/api/",
