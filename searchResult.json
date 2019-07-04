@@ -1,0 +1,45 @@
+{
+ "kind": "youtube#searchListResponse",
+ "etag": "\"Bdx4f4ps3xCOOo1WZ91nTLkRZ_c/IX7_xJ8pfmtZrB3KOGNz3qfdW9A\"",
+ "nextPageToken": "CAEQAA",
+ "regionCode": "VN",
+ "pageInfo": {
+  "totalResults": 1000000,
+  "resultsPerPage": 1
+ },
+ "items": [
+  {
+   "kind": "youtube#searchResult",
+   "etag": "\"Bdx4f4ps3xCOOo1WZ91nTLkRZ_c/j0uEstXCXOhrDqDegEBmEeHqsBM\"",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "YQHsXMglC9A"
+   },
+   "snippet": {
+    "publishedAt": "2015-10-23T06:54:18.000Z",
+    "channelId": "UComP_epzeKzvBX156r6pm1Q",
+    "title": "Adele - Hello",
+    "description": "'Hello' is taken from the new album, 25, out November 20. http://adele.com Available now from iTunes http://smarturl.it/itunes25 Available now from Amazon ...",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/YQHsXMglC9A/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/YQHsXMglC9A/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/YQHsXMglC9A/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "AdeleVEVO",
+    "liveBroadcastContent": "none"
+   }
+  }
+ ]
+}
