@@ -19,7 +19,7 @@ async function add({ id }, username) {
         let service = google.youtube('v3');
         try {
             const searchResults = await service.videos.list({
-                auth: 'AIzaSyBfmlyyM7uBtom1wBGVkTUuY98PKhHa3iE',
+                auth: 'AIzaSyCiMzEh7Qbm55R7JxcugLkuLTBzWVuLrEg',
                 part: 'snippet',
                 id: id
             });
@@ -50,9 +50,13 @@ async function search(query) {
     let service = google.youtube('v3');
     try {
         const searchResults = await service.search.list({
-            auth: 'AIzaSyBfmlyyM7uBtom1wBGVkTUuY98PKhHa3iE',
+            auth: 'AIzaSyCiMzEh7Qbm55R7JxcugLkuLTBzWVuLrEg',
             part: 'snippet',
-            q: query
+            q: query,
+            videoCategoryId: '10',
+            type: 'video',
+            videoEmbeddable: true,
+            order: 'viewcount'
         });
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {

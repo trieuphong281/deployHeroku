@@ -28,7 +28,7 @@ async function authenticate({ username, password }) {
     }
 }
 // processing
-async function logout({ token, username }) {
+async function logout({ username }) {
     // Log user out of the application
     try {
         const user = await User.findOne({ username });
