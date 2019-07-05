@@ -56,7 +56,6 @@ async function search(query) {
             videoCategoryId: '10',
             type: 'video',
             videoEmbeddable: true,
-            order: 'viewcount'
         });
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {
