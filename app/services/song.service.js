@@ -54,6 +54,7 @@ async function addSongToList({ id }, username) {
         }
         catch (error) {
             return {
+                status: 400,
                 message: error
             };
         }
@@ -88,7 +89,10 @@ async function searchSongs(query) {
         }
     }
     catch (error) {
-        return next(error);
+        return {
+            status: 400,
+            message: filteredListVideo
+        }
     }
 }
 
@@ -193,13 +197,13 @@ async function getPlaylist() {
     }
     catch (error) {
         return {
-            status: 200,
+            status: 400,
             message: "Error" + error
         };
     }
 }
 
-async function removeFinishedSong({video_id}) {
+async function removeFinishedSong({ video_id }) {
     try {
         const removeResult = await Song.deleteOne({ _id: mongoose.Types.ObjectId(video_id) });
         if (removeResult)
@@ -208,14 +212,14 @@ async function removeFinishedSong({video_id}) {
                 message: "Remove song succesfully!"
             };
         else
-        return {
-            status: 202,
-            message: "Failed to remove song!"
-        };
+            return {
+                status: 202,
+                message: "Failed to remove song!"
+            };
     }
     catch (error) {
         return {
-            status: 202,
+            status: 400,
             message: error
         };
     }
