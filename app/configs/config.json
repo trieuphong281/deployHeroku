@@ -1,10 +1,7 @@
 ﻿{
     "connectionString": "mongodb://vuong:vuong123@ds263161.mlab.com:63161/music-app",
     "secret": "MUSIC WEBSITE OF THE COMPANY - Made by Summer Interns in 2019",
-    "refreshTokenSecret": "Refresh Token for MUSIC WEBSITE OF THE COMPANY",
     "baseUrl": "/api/",
-    "tokenLife": 900,
-    "refreshTokenLife": 86400
 }
 
 
