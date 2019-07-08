@@ -25,7 +25,7 @@ async function addSongToList({ id }, username) {
         let service = google.youtube('v3');
         try {
             const searchResults = await service.videos.list({
-                auth: 'AIzaSyDlbFOx0xj-a2-vByhz3Q9Db190kz-aXE8',
+                auth: config.youtubeApiKEY ,
                 part: 'snippet',
                 id: id
             });
@@ -62,17 +62,18 @@ async function addSongToList({ id }, username) {
 
 }
 // processing
-async function searchSongs(query) {
+async function searchSongs(searchName,pagesToken) {
     let service = google.youtube('v3');
     try {
         const searchResults = await service.search.list({
-            auth: 'AIzaSyDlbFOx0xj-a2-vByhz3Q9Db190kz-aXE8',
+            auth: config.youtubeApiKEY,
             part: 'snippet',
             type: 'video',
             videoEmbeddable: true,
-            maxResults: 5,
+            maxResults: 10,
+            pageToken: pagesToken,
             videoCategoryId: '10',
-            q: query
+            q: searchName
         });
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {
@@ -84,14 +85,19 @@ async function searchSongs(query) {
             const filteredListVideo = await filterVideoResult(videolist);
             return {
                 status: 200,
-                message: filteredListVideo
+                message: 
+                {
+                    nextPage: searchResults.data.nextPageToken,
+                    previousPage: searchResults.data.prevPageToken,
+                    data: filteredListVideo
+                }
             };
         }
     }
     catch (error) {
         return {
             status: 400,
-            message: filteredListVideo
+            message: error
         }
     }
 }
@@ -124,7 +130,7 @@ async function getSong(videoId) {
     let service = google.youtube('v3');
     try {
         const searchResults = await service.videos.list({
-            auth: 'AIzaSyDlbFOx0xj-a2-vByhz3Q9Db190kz-aXE8',
+            auth: config.youtubeApiKEY,
             part: 'snippet',
             id: videoId
         });

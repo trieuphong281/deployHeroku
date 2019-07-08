@@ -127,7 +127,7 @@ function getChannel(auth) {
 function getSearchList(auth) {
     let service = google.youtube('v3');
     service.search.list({
-      auth: 'auth',
+      auth: auth,
       part: 'snippet',
       q: 'Hello'
     }, function(err, response) {

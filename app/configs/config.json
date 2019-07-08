@@ -1,7 +1,8 @@
 ﻿{
     "connectionString": "mongodb://vuong:vuong123@ds263161.mlab.com:63161/music-app",
     "secret": "MUSIC WEBSITE OF THE COMPANY - Made by Summer Interns in 2019",
-    "baseUrl": "/api/"
+    "baseUrl": "/api/",
+    "youtubeApiKEY": "AIzaSyBQDguBtG38lBjzuYcM00We78nUpE0JvJU"
 }
 
 

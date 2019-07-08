@@ -13,8 +13,6 @@ router.post('/add/', addToList);
 router.post('/vote/', votingSong);
 router.post('/remove', removeSongFinished);
 
-
-
 module.exports = router;
 
 async function addToList(req, res) {
@@ -29,18 +27,14 @@ async function addToList(req, res) {
 }
 
 async function searchByQuery(req, res) {
-    songService.searchSongs(req.params.query)
+    songService.searchSongs(req.params.query, req.query.page)
         .then(msg => res.status(msg.status).json(msg.message))
         .catch(err => res.status(400).send(err));
 }
 async function getSongById(req, res) {
-    if (await jwt.isValid(req)) {
-        songService.getSong(req.params.id)
-            .then(msg => res.status(msg.status).json(msg.message))
-            .catch(err => next(err));
-    } else {
-        res.status(401).json({ message: "Invalid TOKEN!!!" });
-    }
+    songService.getSong(req.params.id)
+        .then(msg => res.status(msg.status).json(msg.message))
+        .catch(err => next(err));
 }
 async function votingSong(req, res) {   // upvote-downvote:true-false
     const user = await jwt.isValid(req);
