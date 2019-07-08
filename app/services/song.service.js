@@ -171,7 +171,8 @@ async function getPlaylist() {
                     videoID: "$videoId",
                     title: "$title",
                     channelTitle: "$channelTitle",
-                    thumbnails: "$thumbnails"
+                    thumbnails: "$thumbnails",
+                    user: "$addedUser"
                 }
             },
             {
