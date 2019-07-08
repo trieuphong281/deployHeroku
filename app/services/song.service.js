@@ -18,7 +18,7 @@ async function addSongToList({ id }, username) {
     const user = await User.findOne({ username });
     if (user.songAdd === 0) {
         return {
-            status: 204,
+            status: 200,
             message: 'Already used Add'
         };
     } else {
@@ -32,7 +32,7 @@ async function addSongToList({ id }, username) {
             let videoItem = searchResults.data.items[0];
             if (videoItem.length == 0) {
                 return {
-                    status: 204,
+                    status: 200,
                     message: 'No video found'
                 };
             } else {
@@ -76,7 +76,7 @@ async function searchSongs(query) {
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {
             return {
-                status: 204,
+                status: 200,
                 message: 'No video found'
             };
         } else {
@@ -105,7 +105,7 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
         }
         else {
             return {
-                status: 202,
+                status: 200,
                 message: 'Out of vote!!!'
             }
         }
@@ -186,14 +186,14 @@ async function getPlaylist() {
             };
         else {
             return {
-                status: 204,
+                status: 200,
                 message: "There is no song in the play list now!"
             };
         }
     }
     catch (error) {
         return {
-            status: 204,
+            status: 200,
             message: "Error" + error
         };
     }
