@@ -166,6 +166,8 @@ async function getPlaylist() {
             {
                 $project: {
                     voteValue: { $subtract: ["$upvote", "$downvote"] },
+                    upvote: "$upvote",
+                    downvote: "$downvote",
                     videoID: "$videoId",
                     title: "$title",
                     channelTitle: "$channelTitle",
