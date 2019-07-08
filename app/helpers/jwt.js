@@ -14,10 +14,13 @@ function jwt() {
     return expressJwt({ secret, isRevoked }).unless({
         path: [
             // public routes that don't require authentication
-            "/api/users/authenticate",
-            "/api/users/register",
-            "/api",
-            /^\/api\/songs\/search\/.*/
+            '/api/users/authenticate',
+            '/api/users/register',
+            '/api',
+            '/api/songs/get/list',
+            '/api/songs/remove',            
+            /^\/api\/songs\/get\/.*/,
+            /^\/api\/songs\/search\/.*/,
         ]
     });
 }
@@ -32,8 +35,8 @@ async function isRevoked(req, payload, done) {
 };
 
 async function isValid(req) {
-    var token = req.headers.authorization.split('Bearer ')[1];
     try {
+    var token = req.headers.authorization.split('Bearer ')[1];
         const user = await User.findOne({ token });
         if (user.token) {
             return user;

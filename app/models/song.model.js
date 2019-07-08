@@ -16,6 +16,10 @@ const schema = new Schema({
         type: String, 
         required: true
     },
+    addedUser: {
+        type: String,
+        required: true,
+    },
     upvote: { 
         type: Number,
         default: 0
