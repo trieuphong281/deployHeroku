@@ -35,6 +35,9 @@ const schema = new Schema({
     dateAdd: { 
         type: Date,
         default: Date.now,
+    },
+    duration:{
+        type: Number
     }
 });
 

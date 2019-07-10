@@ -25,8 +25,8 @@ async function addSongToList({ id }, username) {
         let service = google.youtube('v3');
         try {
             const searchResults = await service.videos.list({
-                auth: config.youtubeApiKEY ,
-                part: 'snippet',
+                auth: config.youtubeApiKEY,
+                part: 'snippet,contentDetails',
                 id: id
             });
             let videoItem = searchResults.data.items[0];
@@ -41,7 +41,8 @@ async function addSongToList({ id }, username) {
                     title: videoItem.snippet.title,
                     channelTitle: videoItem.snippet.channelTitle,
                     thumbnails: videoItem.snippet.thumbnails.medium.url,
-                    addedUser: username
+                    addedUser: username,
+                    duration: convert_time(videoItem.contentDetails.duration)
                 });
                 await song.save();
                 user.songAdd = 0;
@@ -62,7 +63,7 @@ async function addSongToList({ id }, username) {
 
 }
 // processing
-async function searchSongs(searchName,pagesToken) {
+async function searchSongs(searchName, pagesToken) {
     let service = google.youtube('v3');
     try {
         const searchResults = await service.search.list({
@@ -75,6 +76,7 @@ async function searchSongs(searchName,pagesToken) {
             videoCategoryId: '10',
             q: searchName
         });
+        console.log(searchResults.status);
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {
             return {
@@ -85,7 +87,7 @@ async function searchSongs(searchName,pagesToken) {
             const filteredListVideo = await filterVideoResult(videolist);
             return {
                 status: 200,
-                message: 
+                message:
                 {
                     nextPage: searchResults.data.nextPageToken,
                     previousPage: searchResults.data.prevPageToken,
@@ -131,7 +133,7 @@ async function getSong(videoId) {
     try {
         const searchResults = await service.videos.list({
             auth: config.youtubeApiKEY,
-            part: 'snippet',
+            part: 'snippet,contentDetails',
             id: videoId
         });
         if (searchResults.data.items.length === 0) {
@@ -146,7 +148,12 @@ async function getSong(videoId) {
                 title: videoItem.snippet.title,
                 channelTitle: videoItem.snippet.channelTitle,
                 thumbnails: videoItem.snippet.thumbnails.medium.url,
+                duration: convert_time(videoItem.contentDetails.duration)
             });
+            return {
+                status: 200,
+                message: song
+            }
         }
     }
     catch (error) {
@@ -229,4 +236,37 @@ async function removeFinishedSong({ video_id }) {
             message: error
         };
     }
+}
+
+function convert_time(duration) {
+    let a = duration.match(/\d+/g);
+
+    if (duration.indexOf('M') >= 0 && duration.indexOf('H') == -1 && duration.indexOf('S') == -1) {
+        a = [0, a[0], 0];
+    }
+
+    if (duration.indexOf('H') >= 0 && duration.indexOf('M') == -1) {
+        a = [a[0], 0, a[1]];
+    }
+    if (duration.indexOf('H') >= 0 && duration.indexOf('M') == -1 && duration.indexOf('S') == -1) {
+        a = [a[0], 0, 0];
+    }
+
+    duration = 0;
+
+    if (a.length == 3) {
+        duration = duration + parseInt(a[0]) * 3600;
+        duration = duration + parseInt(a[1]) * 60;
+        duration = duration + parseInt(a[2]);
+    }
+
+    if (a.length == 2) {
+        duration = duration + parseInt(a[0]) * 60;
+        duration = duration + parseInt(a[1]);
+    }
+
+    if (a.length == 1) {
+        duration = duration + parseInt(a[0]);
+    }
+    return duration;
 }
