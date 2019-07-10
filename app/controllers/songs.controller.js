@@ -7,7 +7,7 @@ const User = db.User;
 
 // routes
 router.get('/search/:query', searchByQuery);
-router.get('/get/list', getPlayList);
+router.get('/playlist', getPlayList);
 router.get('/get/:id', getSongById);
 router.post('/add/', addToList);
 router.post('/vote/', votingSong);

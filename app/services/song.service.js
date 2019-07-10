@@ -189,7 +189,8 @@ async function getPlaylist() {
                     title: "$title",
                     channelTitle: "$channelTitle",
                     thumbnails: "$thumbnails",
-                    user: "$addedUser"
+                    user: "$addedUser",
+                    duration: "$duration"
                 }
             },
             {

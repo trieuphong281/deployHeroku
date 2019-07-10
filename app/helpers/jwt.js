@@ -19,8 +19,9 @@ function jwt() {
             '/api',
             '/api/songs/get/list',
             '/api/songs/remove',            
-            /^\/api\/songs\/get\/.*/,
+            '/api/songs/playlist',            
             /^\/api\/songs\/search\/.*/,
+            /^\/api\/songs\/get\/.*/
         ]
     });
 }
