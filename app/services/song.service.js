@@ -62,7 +62,6 @@ async function addSongToList({ id }, username) {
     }
 
 }
-// processing
 async function searchSongs(searchName, pagesToken) {
     let service = google.youtube('v3');
     try {
@@ -76,7 +75,6 @@ async function searchSongs(searchName, pagesToken) {
             videoCategoryId: '10',
             q: searchName
         });
-        console.log(searchResults.status);
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {
             return {
@@ -109,15 +107,13 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
     try {
         const votingUser = await User.findOne({ username });
         if (votingUser.vote > 0) {
-            const userDecreaseVote = await User.findOneAndUpdate({ username: username }, { $inc: { vote: -1 } });
-            if (userDecreaseVote) {
-                await Song.findOneAndUpdate({ _id: mongoose.Types.ObjectId(video_id) }, { $inc: isUpvote === true ? { upvote: 1 } : { downvote: 1 } });
-                return { status: '201', Message: `Successfully voted!!!` };
-            }
+            await User.findOneAndUpdate({ username: username }, { $inc: { vote: -1 } });
+            await Song.findOneAndUpdate({ _id: mongoose.Types.ObjectId(video_id) }, { $inc: isUpvote === true ? { upvote: 1 } : { downvote: 1 } });
+            return { status: '200', Message: `Successfully voted!!!` };
         }
         else {
             return {
-                status: 200,
+                status: 400,
                 message: 'Out of vote!!!'
             }
         }
@@ -165,15 +161,14 @@ async function getSong(videoId) {
 }
 
 async function filterVideoResult(videolist) {
-    let filterdList = [];
-    videolist.forEach(item =>
-        filterdList.push({
+    let filterdList = videolist.map(item => {
+        return {
             videoId: item.id.videoId,
             title: item.snippet.title,
             channelTitle: item.snippet.channelTitle,
-            thumbnails: item.snippet.thumbnails.medium.url,
-        })
-    )
+            thumbnails: item.snippet.thumbnails.medium.url
+        }
+    });
     return filterdList;
 }
 
@@ -214,7 +209,7 @@ async function removeFinishedSong({ video_id }) {
             };
         else
             return {
-                status: 202,
+                status: 400,
                 message: "Failed to remove song!"
             };
     }
