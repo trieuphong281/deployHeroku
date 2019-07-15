@@ -18,7 +18,7 @@ async function addSongToList({ id }, username) {
     const user = await User.findOne({ username });
     if (user.songAdd === 0) {
         return {
-            status: 200,
+            status: 400,
             message: 'Already used Add'
         };
     } else {
