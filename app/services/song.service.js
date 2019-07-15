@@ -120,6 +120,7 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
     }
     catch (error) {
         return ({
+            status: 400,
             Message: error
         });
     }
