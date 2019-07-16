@@ -11,7 +11,6 @@ router.get('/playlist', getPlayList);
 router.get('/get/:id', getSongById);
 router.post('/add/', addToList);
 router.post('/vote/', votingSong);
-router.post('/remove', removeSongFinished);
 
 module.exports = router;
 
@@ -62,8 +61,4 @@ async function getPlayList(req, res) {
         .catch(err => res.status(400).send(err));
 }
 
-async function removeSongFinished(req, res) {
-    songService.removeFinishedSong(req.body)
-        .then(msg => res.status(msg.status).json(msg.message))
-        .catch(err => res.status(400).send(err));
-}
+

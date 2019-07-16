@@ -11,7 +11,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    resetUserCollection
 };
 
 async function authenticate({ username, password }) {
@@ -87,4 +88,14 @@ async function update(id, userParam) {
 
 async function _delete(id) {
     await User.findByIdAndRemove(id);
+}
+async function resetUserCollection() {
+    await User.find({}, function (err, users) {
+        if (err) throw err;
+        users.forEach(function (user) {
+            user.vote = 5;
+            user.songAdd = 1;
+            user.save();
+        })
+    });
 }

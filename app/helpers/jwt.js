@@ -19,7 +19,8 @@ function jwt() {
             '/api',
             '/api/songs/get/list',
             '/api/songs/remove',            
-            '/api/songs/playlist',            
+            '/api/songs/playlist',   
+            '/socket-io',  
             /^\/api\/songs\/search\/.*/,
             /^\/api\/songs\/get\/.*/
         ]

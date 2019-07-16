@@ -10,10 +10,9 @@ module.exports = {
     addSongToList,
     searchSongs,
     voteASong,
-    getSong,
     getPlaylist,
-    removeFinishedSong,
-    isAfterScheduleTime
+    isAfterScheduleTime,
+    resetSongCollection
 };
 
 async function addSongToList({ id }, username) {
@@ -202,27 +201,27 @@ async function getPlaylist() {
     }
 }
 
-async function removeFinishedSong({ video_id }) {
-    try {
-        const removeResult = await Song.deleteOne({ _id: mongoose.Types.ObjectId(video_id) });
-        if (removeResult)
-            return {
-                status: 200,
-                message: "Remove song succesfully!"
-            };
-        else
-            return {
-                status: 400,
-                message: "Failed to remove song!"
-            };
-    }
-    catch (error) {
-        return {
-            status: 400,
-            message: error
-        };
-    }
-}
+// async function removeFinishedSong({ video_id }) {
+//     try {
+//         const removeResult = await Song.deleteOne({ _id: mongoose.Types.ObjectId(video_id) });
+//         if (removeResult)
+//             return {
+//                 status: 200,
+//                 message: "Remove song succesfully!"
+//             };
+//         else
+//             return {
+//                 status: 400,
+//                 message: "Failed to remove song!"
+//             };
+//     }
+//     catch (error) {
+//         return {
+//             status: 400,
+//             message: error
+//         };
+//     }
+// }
 
 function convert_time(duration) {
     let a = duration.match(/\d+/g);
@@ -257,7 +256,22 @@ function convert_time(duration) {
     return duration;
 }
 
-function isAfterScheduleTime()
-{
+function isAfterScheduleTime() {
     return timeChecker.isAfter();
+}
+async function resetSongCollection() {
+    try {
+        await Song.deleteMany({});
+        return {
+            status: ok,
+            message: "Successfully Reset Song!!!"
+        };
+    }
+    catch(error)
+    {
+        return {
+            status: failed,
+            message: error
+        };
+    }
 }
