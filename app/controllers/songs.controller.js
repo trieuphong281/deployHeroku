@@ -16,6 +16,9 @@ router.post('/remove', removeSongFinished);
 module.exports = router;
 
 async function addToList(req, res) {
+    if (songService.isAfterScheduleTime()) {
+        return res.status(400).json("Out of scheduled Time");
+    }
     const user = await jwt.isValid(req);
     if (user) {
         songService.addSongToList(req.body, user.username)
@@ -27,6 +30,9 @@ async function addToList(req, res) {
 }
 
 async function searchByQuery(req, res) {
+    if (songService.isAfterScheduleTime()) {
+        return res.status(400).json("Out of scheduled Time");
+    }
     songService.searchSongs(req.params.query, req.query.page)
         .then(msg => res.status(msg.status).json(msg.message))
         .catch(err => res.status(400).send(err));
@@ -37,6 +43,9 @@ async function getSongById(req, res) {
         .catch(err => next(err));
 }
 async function votingSong(req, res) {   // upvote-downvote:true-false
+    if (songService.isAfterScheduleTime()) {
+        return res.status(400).json("Out of scheduled Time");
+    }
     const user = await jwt.isValid(req);
     if (user) {
         songService.voteASong(req.body, user.username)

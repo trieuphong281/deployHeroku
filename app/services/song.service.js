@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const db = require('../helpers/db');
 const { google } = require('googleapis');
+const timeChecker = require('../helpers/timechecker');
 const Song = db.Song;
 const User = db.User;
 
@@ -11,7 +12,8 @@ module.exports = {
     voteASong,
     getSong,
     getPlaylist,
-    removeFinishedSong
+    removeFinishedSong,
+    isAfterScheduleTime
 };
 
 async function addSongToList({ id }, username) {
@@ -253,4 +255,9 @@ function convert_time(duration) {
         duration = duration + parseInt(a[0]);
     }
     return duration;
+}
+
+function isAfterScheduleTime()
+{
+    return timeChecker.isAfter();
 }
