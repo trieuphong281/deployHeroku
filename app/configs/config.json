@@ -4,7 +4,7 @@
     "baseUrl": "/api/",
     "youtubeApiKEY": "AIzaSyA5BTu5sf0mRvo4x6YVORS5b20wyzr8Z5Q",
     "schduleTime": {
-        "hour": 11,
-        "minute": 30
+        "hour": 12,
+        "minute": 0
     }
 }
