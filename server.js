@@ -49,7 +49,7 @@ const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 
 server.listen(port, function () {
     console.log('Server listening on port ' + port);
     const resetSchedule = new cron.RecurrenceRule();
-    resetSchedule.hour = config.schduleTime.;
+    resetSchedule.hour = 23;
     resetSchedule.minute = 59;
     resetSchedule.second = 59;
     // cron.scheduleJob(resetSchedule, function resetDatabase() {
