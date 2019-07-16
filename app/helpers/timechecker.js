@@ -12,5 +12,5 @@ module.exports = {
 
 function isAfter() {
     const requestTime = new Date();
-    return (requestTime.getHours() >= config.schduleTime.hour && requestTime.getMinutes() >= onfig.schduleTime.hour);
+    return (requestTime.getHours() >= config.schduleTime.hour && requestTime.getMinutes() >= config.schduleTime.hour);
 }
