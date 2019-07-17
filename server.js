@@ -15,6 +15,8 @@ let schuduleTime = [];
 let playlist;
 let currentSong = undefined;
 
+module.exports = { io };
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -67,7 +69,7 @@ server.listen(port, function () {
             if (remainingTime - playlist[i - 1].duration <= 0)
                 break;
             // const duration = playlist[i - 1].duration;
-            const duration = 60;
+            const duration = 10;
             const hour = (duration / 3600 | 0);
             const minute = ((duration - 3600 * hour) / 60 | 0);
             const sec = duration - 3600 * hour - 60 * minute;
@@ -92,13 +94,13 @@ server.listen(port, function () {
         }
         schuduleTime[0].second += 5;
         currentSong = playlist[0];
-        for (let i = 0; i < schuduleTime.length-1; i++) {
+        for (let i = 0; i < schuduleTime.length - 1; i++) {
             cron.scheduleJob(schuduleTime[i], function () {
                 io.sockets.emit('play', playlist[i]);
                 currentSong = playlist[i];
             });
         }
-        cron.scheduleJob(schuduleTime[schuduleTime.length-1], function () {
+        cron.scheduleJob(schuduleTime[schuduleTime.length - 1], function () {
             io.sockets.emit('end', "Playlist has been completely played");
         });
     })

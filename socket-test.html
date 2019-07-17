@@ -15,6 +15,7 @@
       document.getElementById("youtubeplayer").src = 'https://www.youtube.com/embed/' + data.videoId + `?start=${passingTime}&autoplay=1&controls=0`;
     });
     socket.on('end', function endPlaylist(data) {
+      document.getElementById("youtubeplayer").src = "";
       document.getElementById("report").innerHTML = "All things is done!";
     });
   </script>

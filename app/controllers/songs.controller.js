@@ -4,7 +4,7 @@ const songService = require('../services/song.service');
 const db = require('../helpers/db');
 const jwt = require('../helpers/jwt');
 const User = db.User;
-
+const io = require('../../server');
 // routes
 router.get('/search/:query', searchByQuery);
 router.get('/playlist', getPlayList);
@@ -48,7 +48,9 @@ async function votingSong(req, res) {   // upvote-downvote:true-false
     const user = await jwt.isValid(req);
     if (user) {
         songService.voteASong(req.body, user.username)
-            .then(msg => res.status(msg.status).json(msg.message))
+            .then(msg => {
+                res.status(msg.status).json(msg.message);
+            })
             .catch(err => res.status(400).send(err));
     } else {
         res.status(401).json({ message: "Invalid TOKEN!!!" });
