@@ -106,11 +106,6 @@ server.listen(port, function () {
     })
 });
 
-//socket io test routes
-app.get('/socket-io', (req, res) => {
-    res.sendFile('socket-test.html');
-});
-
 io.sockets.on('connection', async function (socket) {
     let now = new Date();
     if (now.getHours() >= schuduleTime[0].hour && now.getMinutes() >= schuduleTime[0].minute) {

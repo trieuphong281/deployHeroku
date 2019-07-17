@@ -5,6 +5,7 @@
   <iframe id="youtubeplayer" width="560" height="315" src="" frameborder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
   </iframe>
+  <div id="vote"></div>
   <div id="report"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -16,7 +17,10 @@
     });
     socket.on('end', function endPlaylist(data) {
       document.getElementById("youtubeplayer").src = "";
-      document.getElementById("report").innerHTML = "All things is done!";
+      document.getElementById("report").innerHTML = "All the thing is done!";
+    });
+    socket.on('voted', function votedCompleted() {
+      document.getElementById("vote").innerHTML = "Voted";
     });
   </script>
   <style>

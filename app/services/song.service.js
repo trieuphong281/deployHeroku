@@ -110,7 +110,7 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
         if (votingUser.vote > 0) {
             await User.findOneAndUpdate({ username: username }, { $inc: { vote: -1 } });
             await Song.findOneAndUpdate({ _id: mongoose.Types.ObjectId(video_id) }, { $inc: isUpvote === true ? { upvote: 1 } : { downvote: 1 } });
-            return { status: '200', Message: `Successfully voted!!!` };
+            return { status: 200, message: `Successfully voted!!!` };
         }
         else {
             return {
@@ -267,8 +267,7 @@ async function resetSongCollection() {
             message: "Successfully Reset Song!!!"
         };
     }
-    catch(error)
-    {
+    catch (error) {
         return {
             status: failed,
             message: error
