@@ -3,8 +3,9 @@
 
 <body>
   <iframe id="youtubeplayer" width="560" height="315" src="" frameborder="0"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+  </iframe>
+  <div id="report"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     let socket = io.connect();
@@ -12,7 +13,10 @@
       let now = new Date();
       let passingTime = (now.getHours() - data.startAt.hour) * 3600 + (now.getMinutes() - data.startAt.minute) * 60 + (now.getSeconds() - data.startAt.second);
       document.getElementById("youtubeplayer").src = 'https://www.youtube.com/embed/' + data.videoId + `?start=${passingTime}&autoplay=1&controls=0`;
-    })
+    });
+    socket.on('end', function endPlaylist(data) {
+      document.getElementById("report").innerHTML = "All things is done!";
+    });
   </script>
   <style>
     #youtubeplayer {

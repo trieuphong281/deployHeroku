@@ -91,7 +91,7 @@ server.listen(port, function () {
         }
         schuduleTime[0].second += 5;
         currentSong = playlist[0];
-        for (let i = 0; i < schuduleTime.length; i++) {
+        for (let i = 0; i < schuduleTime.length-1; i++) {
             cron.scheduleJob(schuduleTime[i], function () {
                 io.sockets.emit('play', playlist[i]);
                 currentSong = playlist[i];
