@@ -62,14 +62,16 @@ server.listen(port, function () {
     schuduleTime[0].hour = config.scheduledTime.hour;
     schuduleTime[0].minute = config.scheduledTime.minute;
     schuduleTime[0].second = config.scheduledTime.second;
+    console.log(schuduleTime[0]);
     cron.scheduleJob(schuduleTime[0], async function setPlaylistSchedule() {
+        console.log('a');
         playlist = (await songService.getPlaylist()).message;
         let remainingTime = 23400;
         for (let i = 1; i <= playlist.length; i++) {
             if (remainingTime - playlist[i - 1].duration <= 0)
                 break;
             // const duration = playlist[i - 1].duration;
-            const duration = 10;
+            const duration = 8;
             const hour = (duration / 3600 | 0);
             const minute = ((duration - 3600 * hour) / 60 | 0);
             const sec = duration - 3600 * hour - 60 * minute;
