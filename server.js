@@ -62,9 +62,7 @@ server.listen(port, function () {
     schuduleTime[0].hour = config.scheduledTime.hour;
     schuduleTime[0].minute = config.scheduledTime.minute;
     schuduleTime[0].second = config.scheduledTime.second;
-    console.log(schuduleTime[0]);
     cron.scheduleJob(schuduleTime[0], async function setPlaylistSchedule() {
-        console.log('a');
         playlist = (await songService.getPlaylist()).message;
         let remainingTime = 23400;
         for (let i = 1; i <= playlist.length; i++) {
@@ -113,7 +111,8 @@ io.sockets.on('connection', async function (socket) {
     if (now.getHours() >= schuduleTime[0].hour && now.getMinutes() >= schuduleTime[0].minute) {
         socket.emit('play', currentSong);
     }
-    if (now.getHours() >= schuduleTime[schuduleTime.length - 1].hour && now.getMinutes() >= schuduleTime[schuduleTime.length - 1].minute) {
+    let endTime = schuduleTime[schuduleTime.length - 1];
+    if ((now.getHours() >= endTime.hour && now.getMinutes() >= endTime.minute) || (now.getHours() > endTime.hour) ) {
         socket.emit('end', "Playlist has been completely played");
     }
 });

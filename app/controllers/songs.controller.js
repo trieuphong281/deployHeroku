@@ -20,7 +20,11 @@ async function addToList(req, res) {
     const user = await jwt.isValid(req);
     if (user) {
         songService.addSongToList(req.body, user.username)
-            .then(song => res.status(song.status).json(song.message))
+            .then(msg => {
+                if (msg.message === 'Sucessfully Added')
+                    server.io.sockets.emit('voted', "Song's been voted!");
+                res.status(msg.status).json(msg.message);
+            })
             .catch(err => res.status(400).send(err));
     } else {
         res.status(401).json({ message: "Invalid TOKEN!!!" });
@@ -48,7 +52,8 @@ async function votingSong(req, res) {   // upvote-downvote:true-false
     if (user) {
         songService.voteASong(req.body, user.username)
             .then(msg => {
-                server.io.sockets.emit('voted',"Song's been voted!");
+                if (msg.message === 'Successfully voted')
+                    server.io.sockets.emit('voted', "Song's been voted!");
                 res.status(msg.status).json(msg.message);
             })
             .catch(err => res.status(400).send(err));

@@ -12,7 +12,6 @@ module.exports = {
 
 function isAfter() {
     const requestTime = new Date();
-    // return (requestTime.getHours() >= config.scheduledTime.hour && requestTime.getMinutes() >= config.scheduledTime.minute);
     return ((requestTime.getHours() >= config.scheduledTime.hour && requestTime.getMinutes() >= config.scheduledTime.minute)
         || (requestTime.getHours() > config.scheduledTime.hour));
 }
