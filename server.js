@@ -11,6 +11,7 @@ const cron = require('node-schedule');
 const songService = require('./app/services/song.service');
 const userService = require('./app/services/user.service');
 const config = require('./app/configs/config.json');
+
 let schuduleTime = [];
 let playlist;
 let currentSong = undefined;
@@ -69,7 +70,7 @@ server.listen(port, function () {
             if (remainingTime - playlist[i - 1].duration <= 0)
                 break;
             // const duration = playlist[i - 1].duration;
-            const duration = 8;
+            const duration = 10;
             const hour = (duration / 3600 | 0);
             const minute = ((duration - 3600 * hour) / 60 | 0);
             const sec = duration - 3600 * hour - 60 * minute;
@@ -111,8 +112,8 @@ io.sockets.on('connection', async function (socket) {
     if (now.getHours() >= schuduleTime[0].hour && now.getMinutes() >= schuduleTime[0].minute) {
         socket.emit('play', currentSong);
     }
-    let endTime = schuduleTime[schuduleTime.length - 1];
-    if ((now.getHours() >= endTime.hour && now.getMinutes() >= endTime.minute) || (now.getHours() > endTime.hour) ) {
+    let  endTime = schuduleTime[schuduleTime.length -1];
+    if (now.getHours() === endTime.hour ? now.getMinutes() >= endTime.minute : now.getHours() > endTime.hour) {
         socket.emit('end', "Playlist has been completely played");
     }
 });

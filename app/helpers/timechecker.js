@@ -1,7 +1,7 @@
 const config = require('../configs/config.json');
 // const moment = require('moment');
 module.exports = {
-    isAfter
+    isAfter,
 };
 
 // function isAfterScheduleTime() {
@@ -12,6 +12,5 @@ module.exports = {
 
 function isAfter() {
     const requestTime = new Date();
-    return ((requestTime.getHours() >= config.scheduledTime.hour && requestTime.getMinutes() >= config.scheduledTime.minute)
-        || (requestTime.getHours() > config.scheduledTime.hour));
+    return ((requestTime.getHours() === config.scheduledTime.hour ? requestTime.getMinutes() >= config.scheduledTime.minute : requestTime.getHours() > config.scheduledTime.hour));
 }
