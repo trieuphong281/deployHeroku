@@ -22,7 +22,7 @@ async function addToList(req, res) {
         songService.addSongToList(req.body, user.username)
             .then(msg => {
                 if (msg.message === 'Sucessfully Added')
-                    server.io.sockets.emit('voted', "Song's been voted!");
+                    server.io.sockets.emit('playlist', "Song's been voted!");
                 res.status(msg.status).json(msg.message);
             })
             .catch(err => res.status(400).send(err));
@@ -53,7 +53,7 @@ async function votingSong(req, res) {   // upvote-downvote:true-false
         songService.voteASong(req.body, user.username)
             .then(msg => {
                 if (msg.message === 'Successfully voted')
-                    server.io.sockets.emit('added', "Song's been voted!");
+                    server.io.sockets.emit('playlist', "Song's been voted!");
                 res.status(msg.status).json(msg.message);
             })
             .catch(err => res.status(400).send(err));
