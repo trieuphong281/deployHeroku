@@ -5,11 +5,11 @@ const userService = require('../services/user.service');
 // routes
 router.post('/authenticate', authenticate);
 router.post('/logout', logout);
-router.post('/register', register);
+router.post('/register', validate('register'), register);
 router.get('/', getAll);
 router.get('/current', getCurrent);
 router.get('/:id', getById);
-router.put('/:id', update);
+router.put('/update', validate('update'), update );
 router.delete('/:id', _delete);
 
 module.exports = router;
@@ -50,14 +50,39 @@ function getById(req, res, next) {
         .catch(err => next(err));
 }
 
-function update(req, res, next) {
-    userService.update(req.params.id, req.body)
-        .then(() => res.send("User successfully updated !!!"))
-        .catch(err => next(err));
+function update(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    try {
+        await userService.update(req.body);
+        res.status(200).json("User successfully updated !!!");
+    } catch (error) {
+        res.status(400).json({ message: error })
+    }
 }
 
 function _delete(req, res, next) {
     userService.delete(req.params.id)
         .then(() => res.send("User successfully deleted !!!"))
         .catch(err => next(err));
+}
+function validate(method) {
+    switch (method) {
+        case 'register': {
+            return [
+                check('username', 'Input username minimum length is 8 characters').exists().isLength({ min: 8 }),
+                check('email', 'Invalid email').exists().isEmail(),
+                check('password', 'Input password minimum length is 8 characters').exist().isLength({ min: 8 })
+            ]
+        }
+        case 'update': {
+            return [
+                check('username', 'Input username minimum length is 8 characters').isLength({ min: 8 }),
+                check('email', 'Invalid email').isEmail(),
+                check('password', 'Input password minimum length is 8 characters').isLength({ min: 8 })
+            ]
+        }
+    }
 }
