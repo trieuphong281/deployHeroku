@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const router = express.Router();
 const userService = require('../services/user.service');
+const { check, validationResult } = require('express-validator');
 
 // routes
 router.post('/authenticate', authenticate);
@@ -9,7 +10,7 @@ router.post('/register', validate('register'), register);
 router.get('/', getAll);
 router.get('/current', getCurrent);
 router.get('/:id', getById);
-router.put('/update', validate('update'), update );
+router.put('/update', validate('update'), update);
 router.delete('/:id', _delete);
 
 module.exports = router;
@@ -50,7 +51,7 @@ function getById(req, res, next) {
         .catch(err => next(err));
 }
 
-function update(req, res) {
+async function update(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -74,7 +75,7 @@ function validate(method) {
             return [
                 check('username', 'Input username minimum length is 8 characters').exists().isLength({ min: 8 }),
                 check('email', 'Invalid email').exists().isEmail(),
-                check('password', 'Input password minimum length is 8 characters').exist().isLength({ min: 8 })
+                check('password', 'Input password minimum length is 8 characters').exists().isLength({ min: 8 })
             ]
         }
         case 'update': {
