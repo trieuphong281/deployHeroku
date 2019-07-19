@@ -68,8 +68,8 @@ async function create(userParam) {
     await user.save();
 }
 
-async function update(userParam) {
-    const user = await User.findById(userParam.id);
+async function update(userParam, id) {
+    const user = await User.findById(id);
     // validate
     if (!user) throw 'User not found';
     if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {

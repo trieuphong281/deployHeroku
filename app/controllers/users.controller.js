@@ -2,6 +2,7 @@
 const router = express.Router();
 const userService = require('../services/user.service');
 const { check, validationResult } = require('express-validator');
+const jwt = require('../helpers/jwt');
 
 // routes
 router.post('/authenticate', authenticate);
@@ -57,7 +58,8 @@ async function update(req, res) {
         return res.status(422).json({ errors: errors.array() });
     }
     try {
-        await userService.update(req.body);
+        const user = await jwt.isValid(req);
+        await userService.update(req.body, user.id);
         res.status(200).json("User successfully updated !!!");
     } catch (error) {
         res.status(400).json({ message: error })
