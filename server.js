@@ -64,6 +64,7 @@ server.listen(port, function () {
     schuduleTime[0].minute = config.scheduledTime.minute;
     schuduleTime[0].second = config.scheduledTime.second;
     cron.scheduleJob(schuduleTime[0], async function setPlaylistSchedule() {
+        schuduleTime[0].second += 29;
         playlist = (await songService.getPlaylist()).message;
         let remainingTime = 23400;
         for (let i = 1; i <= playlist.length; i++) {
@@ -93,7 +94,6 @@ server.listen(port, function () {
             }
             remainingTime -= playlist[i - 1].duration;
         }
-        schuduleTime[0].second += 5;
         currentSong = playlist[0];
         for (let i = 0; i < schuduleTime.length - 1; i++) {
             cron.scheduleJob(schuduleTime[i], function () {
