@@ -1,16 +1,26 @@
-const config = require('../configs/config.json');
-// const moment = require('moment');
+const scheduledTime = require('../configs/config.json').scheduledTime;
+const moment = require('moment');
+const cron = require('node-schedule');
 module.exports = {
-    isAfter,
+    isAfterScheduledTime,
+    isAfterASchedule
 };
 
-// function isAfterScheduleTime() {
-//     const requestTime = moment();
-//     const scheduleTime = moment('9:40', 'hh:mm');
-//     return requestTime.isAfter(scheduleTime);
+function isAfterScheduledTime() {
+    return moment().isAfter(moment(`${scheduledTime.hour}:${scheduledTime.minute}:${scheduledTime.second}:`, 'hh:mm:ss'));
+}
+
+function isAfterASchedule(hour, minute, second) {
+    return moment().isAfter(moment(`${hour}:${minute}:${second}:`, 'hh:mm:ss'));
+}
+
+
+// function isAfterScheduledTime() {
+//     const now = new Date();
+//     return ((now.getHours() === config.scheduledTime.hour ? (now.getMinutes() === config.scheduledTime.minute ? now.getSeconds() >= scheduledTime.second : now.getMinutes() > config.scheduledTime.minute) : now.getHours() > config.scheduledTime.hour));
 // }
 
-function isAfter() {
-    const requestTime = new Date();
-    return ((requestTime.getHours() === config.scheduledTime.hour ? requestTime.getMinutes() >= config.scheduledTime.minute : requestTime.getHours() > config.scheduledTime.hour));
-}
+// function isAfterASchedule(hour, minute, second) {
+//     const now = new Date();
+//     return ((now.getHours() === hour ? (now.getMinutes() === minute ? now.getSeconds() >= second : now.getMinutes() > minute) : now.getHours() > hour));
+// }

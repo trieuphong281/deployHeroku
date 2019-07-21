@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CES TEST</title>
+</head>
 
 <body>
-  <iframe id="youtubeplayer" width="560" height="315" src="" frameborder="0"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-  </iframe>
-  <div id="vote"></div>
-  <div id="report"></div>
+  <div id="youtubeContainer">
+    <div><iframe id="youtubeplayer" width="800" height="500" src="" frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+      </iframe>
+    </div>
+    <h2 id="info">Hello</h2>
+    <h2 id="report">Hello</h2>
+  </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     let socket = io.connect();
@@ -14,18 +24,24 @@
       let now = new Date();
       let passingTime = (now.getHours() - data.startAt.hour) * 3600 + (now.getMinutes() - data.startAt.minute) * 60 + (now.getSeconds() - data.startAt.second);
       document.getElementById("youtubeplayer").src = 'https://www.youtube.com/embed/' + data.videoId + `?start=${passingTime}&autoplay=1&controls=0`;
+      document.getElementById("info").innerHTML = data.title;
     });
     socket.on('end', function endPlaylist(data) {
       document.getElementById("youtubeplayer").src = "";
+      document.getElementById("info").innerHTML = "All the thing is done!";
       document.getElementById("report").innerHTML = "All the thing is done!";
     });
-    socket.on('voted', function votedCompleted() {
-      document.getElementById("vote").innerHTML = "Voted";
+    socket.on('voted', function getPlaylist() {
+      document.getElementById("report").innerHTML = "Voted";
     });
   </script>
   <style>
+    #youtubeContainer {
+      text-align: center;
+    }
+
     #youtubeplayer {
-      pointer-events: none
+      pointer-events: none;
     }
   </style>
 </body>

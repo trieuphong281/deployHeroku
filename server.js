@@ -3,16 +3,18 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const jwt = require('./app/helpers/jwt');
-const errorHandler = require('./app/helpers/error-handler');
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const cron = require('node-schedule');
+
+const jwt = require('./app/helpers/jwt');
+const errorHandler = require('./app/helpers/error-handler');
 const songService = require('./app/services/song.service');
 const userService = require('./app/services/user.service');
-const config = require('./app/configs/config.json');
+const scheduledTime = require('./app/configs/config.json').scheduledTime;
+const timeComparer = require('./app/helpers/timechecker');
 
-let schuduleTime = [];
+let playlistSchedule = [];
 let playlist;
 let currentSong = undefined;
 
@@ -59,49 +61,50 @@ server.listen(port, function () {
     //     songService.resetSongCollection();
     //     userService.resetUserCollection();
     // });
-    schuduleTime[0] = new cron.RecurrenceRule();
-    schuduleTime[0].hour = config.scheduledTime.hour;
-    schuduleTime[0].minute = config.scheduledTime.minute;
-    schuduleTime[0].second = config.scheduledTime.second;
-    cron.scheduleJob(schuduleTime[0], async function setPlaylistSchedule() {
-        schuduleTime[0].second += 1;
+    playlistSchedule[0] = new cron.RecurrenceRule();
+    playlistSchedule[0].hour = scheduledTime.hour;
+    playlistSchedule[0].minute = scheduledTime.minute;
+    playlistSchedule[0].second = scheduledTime.second;
+    cron.scheduleJob(playlistSchedule[0], async function setPlaylistSchedule() {
+        playlistSchedule[0].minute += 1;
+        playlistSchedule[0].second = 0;
         playlist = (await songService.getPlaylist()).message;
         let remainingTime = 23400;
         for (let i = 1; i <= playlist.length; i++) {
             if (remainingTime - playlist[i - 1].duration <= 0)
                 break;
-            const duration = playlist[i - 1].duration;
-            // const duration = 60;
+            // const duration = playlist[i - 1].duration;
+            const duration = 15;
             const hour = (duration / 3600 | 0);
             const minute = ((duration - 3600 * hour) / 60 | 0);
             const sec = duration - 3600 * hour - 60 * minute;
-            schuduleTime[i] = new cron.RecurrenceRule();
-            schuduleTime[i].hour = schuduleTime[i - 1].hour + hour;
-            schuduleTime[i].minute = schuduleTime[i - 1].minute + minute;
-            schuduleTime[i].second = schuduleTime[i - 1].second + sec;
-            if (schuduleTime[i].second >= 60) {
-                schuduleTime[i].second = schuduleTime[i].second % 60;
-                schuduleTime[i].minute += 1;
+            playlistSchedule[i] = new cron.RecurrenceRule();
+            playlistSchedule[i].hour = playlistSchedule[i - 1].hour + hour;
+            playlistSchedule[i].minute = playlistSchedule[i - 1].minute + minute;
+            playlistSchedule[i].second = playlistSchedule[i - 1].second + sec;
+            if (playlistSchedule[i].second >= 60) {
+                playlistSchedule[i].second = playlistSchedule[i].second % 60;
+                playlistSchedule[i].minute += 1;
             }
-            if (schuduleTime[i].minute >= 60) {
-                schuduleTime[i].minute = schuduleTime[i].minute % 60;
-                schuduleTime[i].hour += 1;
+            if (playlistSchedule[i].minute >= 60) {
+                playlistSchedule[i].minute = playlistSchedule[i].minute % 60;
+                playlistSchedule[i].hour += 1;
             }
             playlist[i - 1].startAt = {
-                hour: schuduleTime[i - 1].hour,
-                minute: schuduleTime[i - 1].minute,
-                second: schuduleTime[i - 1].second
+                hour: playlistSchedule[i - 1].hour,
+                minute: playlistSchedule[i - 1].minute,
+                second: playlistSchedule[i - 1].second
             }
             remainingTime -= playlist[i - 1].duration;
         }
         currentSong = playlist[0];
-        for (let i = 0; i < schuduleTime.length - 1; i++) {
-            cron.scheduleJob(schuduleTime[i], function () {
+        for (let i = 0; i < playlistSchedule.length - 1; i++) {
+            cron.scheduleJob(playlistSchedule[i], function () {
                 io.sockets.emit('play', playlist[i]);
                 currentSong = playlist[i];
             });
         }
-        cron.scheduleJob(schuduleTime[schuduleTime.length - 1], function () {
+        cron.scheduleJob(playlistSchedule[playlistSchedule.length - 1], function () {
             io.sockets.emit('end', "Playlist has been completely played");
             currentSong = "All over";
         });
@@ -109,12 +112,16 @@ server.listen(port, function () {
 });
 
 io.sockets.on('connection', async function (socket) {
-    let now = new Date();
-    if (now.getHours() === schuduleTime[0].hour ? now.getMinutes() >= schuduleTime[0].minute : now.getHours() > schuduleTime[0].hour) {
-        socket.emit('play', currentSong);
+    // handle users that enter the app after 17:30 pm
+    if (timeComparer.isAfterASchedule(playlistSchedule[0].hour, playlistSchedule[0].minute, playlistSchedule[0].second)) {
+        // handle users that enter the app after the playlist finished
+        let endTime = playlistSchedule[playlistSchedule.length - 1];
+        if (timeComparer.isAfterASchedule(endTime.hour, endTime.minute, endTime.second)) {
+            socket.emit('end', "Finished playing videos !!!");
+        } else {
+            socket.emit('play', currentSong);
+        }
     }
-    let endTime = schuduleTime[schuduleTime.length - 1];
-    if (now.getHours() === endTime.hour ? now.getMinutes() >= endTime.minute : now.getHours() > endTime.hour) {
-        socket.emit('end', "Playlist has been completely played");
-    }
+
 });
+

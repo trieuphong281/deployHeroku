@@ -257,7 +257,7 @@ function convert_time(duration) {
 }
 
 function isAfterScheduleTime() {
-    return timeChecker.isAfter();
+    return timeChecker.isAfterScheduledTime();
 }
 async function resetSongCollection() {
     try {
