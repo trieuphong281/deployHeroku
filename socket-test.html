@@ -15,7 +15,7 @@
       </iframe>
     </div>
     <h2 id="info">Hello</h2>
-    <h2 id="report">Hello</h2>
+    <h2 id="report"></h2>
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -28,7 +28,7 @@
     });
     socket.on('end', function endPlaylist(data) {
       document.getElementById("youtubeplayer").src = "";
-      document.getElementById("info").innerHTML = "All the thing is done!";
+      document.getElementById("info").innerHTML = "";
       document.getElementById("report").innerHTML = "All the thing is done!";
     });
     socket.on('voted', function getPlaylist() {
