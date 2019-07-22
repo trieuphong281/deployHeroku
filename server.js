@@ -73,8 +73,8 @@ server.listen(port, function () {
         for (let i = 1; i <= playlist.length; i++) {
             if (remainingTime - playlist[i - 1].duration <= 0)
                 break;
-            // const duration = playlist[i - 1].duration;
-            const duration = 15;
+            const duration = playlist[i - 1].duration;
+            // const duration = 15;
             const hour = (duration / 3600 | 0);
             const minute = ((duration - 3600 * hour) / 60 | 0);
             const sec = duration - 3600 * hour - 60 * minute;
