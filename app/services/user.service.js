@@ -12,7 +12,8 @@ module.exports = {
     create,
     update,
     delete: _delete,
-    resetUserCollection
+    resetUserCollection,
+    changepassword
 };
 
 async function authenticate({ username, password }) {
@@ -84,6 +85,15 @@ async function update(userParam, id) {
     }
     // copy userParam properties to user
     Object.assign(user, userParam);
+    await user.save();
+}
+async function changepassword(userParam, id) {
+    const user = await User.findById(id);
+    // validate
+    if (!user) throw 'User not found';
+    if (!bcrypt.compareSync(userParam.oldPassword,user.hash))
+        throw 'Old password is incorrect';
+    user.hash = bcrypt.hashSync(userParam.newPassword, 10);
     await user.save();
 }
 

@@ -4,7 +4,7 @@ const songService = require('../services/song.service');
 const jwt = require('../helpers/jwt');
 const server = require('../../server');
 // routes
-router.get('/search/:query', searchByQuery);
+router.get('/search/:searchingText', searchByQuery);
 router.get('/playlist', getPlayList);
 router.get('/get/:id', getSongById);
 router.post('/add/', addToList);
@@ -34,7 +34,7 @@ async function searchByQuery(req, res) {
     if (songService.isAfterScheduleTime()) {
         return res.status(400).json("Out of scheduled Time");
     }
-    songService.searchSongs(req.params.query, req.query.page)
+    songService.searchSongs(req.params.searchingText, req.query.page)
         .then(msg => res.status(msg.status).json(msg.message))
         .catch(err => res.status(400).send(err));
 }
