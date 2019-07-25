@@ -7,11 +7,11 @@ module.exports = {
 };
 
 function isAfterScheduledTime() {
-    return moment().isAfter(moment(`${scheduledTime.hour}:${scheduledTime.minute}:${scheduledTime.second}:`, 'hh:mm:ss'));
+    return moment().isAfter(moment(`${scheduledTime.hour}:${scheduledTime.minute}:${scheduledTime.second}`, 'hh:mm:ss'));
 }
 
 function isAfterASchedule(hour, minute, second) {
-    return moment().isAfter(moment(`${hour}:${minute}:${second}:`, 'hh:mm:ss'));
+    return moment().isAfter(moment(`${hour}:${minute}:${second}`, 'hh:mm:ss'));
 }
 
 
