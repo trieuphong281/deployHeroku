@@ -6,7 +6,7 @@ const server = require('../../server');
 const isDisable = require('../helpers/timechecker').isAfterScheduledTime;
 // routes
 router.get('/search/:searchingText', isDisable, searchByQuery);
-router.get('/playlist', isDisable, getPlayList);
+router.get('/playlist', getPlayList);
 router.get('/get/:id', isDisable, getSongById);
 router.post('/add/', isDisable, addToList);
 router.post('/vote/', isDisable, votingSong);
