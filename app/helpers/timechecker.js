@@ -6,8 +6,10 @@ module.exports = {
     isAfterASchedule
 };
 
-function isAfterScheduledTime() {
-    return moment().isAfter(moment(`${scheduledTime.hour}:${scheduledTime.minute}:${scheduledTime.second}`, 'hh:mm:ss'));
+function isAfterScheduledTime(req, res, next) {
+    if (moment().isAfter(moment(`${scheduledTime.hour}:${scheduledTime.minute}:${scheduledTime.second}`, 'hh:mm:ss')))
+        return res.status(400).json({ message: "Out of schedule time" });
+    return next();
 }
 
 function isAfterASchedule(hour, minute, second) {

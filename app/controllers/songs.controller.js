@@ -3,19 +3,17 @@ const router = express.Router();
 const songService = require('../services/song.service');
 const jwt = require('../helpers/jwt');
 const server = require('../../server');
+const isDisable = require('../helpers/timechecker').isAfterScheduledTime;
 // routes
-router.get('/search/:searchingText', searchByQuery);
-router.get('/playlist', getPlayList);
-router.get('/get/:id', getSongById);
-router.post('/add/', addToList);
-router.post('/vote/', votingSong);
+router.get('/search/:searchingText', isDisable, searchByQuery);
+router.get('/playlist', isDisable, getPlayList);
+router.get('/get/:id', isDisable, getSongById);
+router.post('/add/', isDisable, addToList);
+router.post('/vote/', isDisable, votingSong);
 
 module.exports = router;
 
 async function addToList(req, res) {
-    if (songService.isAfterScheduleTime()) {
-        return res.status(400).json("Out of scheduled Time");
-    }
     const user = await jwt.isValid(req);
     if (user) {
         songService.addSongToList(req.body, user.username)
@@ -31,9 +29,6 @@ async function addToList(req, res) {
 }
 
 async function searchByQuery(req, res) {
-    if (songService.isAfterScheduleTime()) {
-        return res.status(400).json("Out of scheduled Time");
-    }
     songService.searchSongs(req.params.searchingText, req.query.page)
         .then(msg => res.status(msg.status).json(msg.message))
         .catch(err => res.status(400).send(err));
@@ -44,9 +39,6 @@ async function getSongById(req, res) {
         .catch(err => next(err));
 }
 async function votingSong(req, res) {   // upvote-downvote:true-false
-    if (songService.isAfterScheduleTime()) {
-        return res.status(400).json("Out of scheduled Time");
-    }
     const user = await jwt.isValid(req);
     if (user) {
         songService.voteASong(req.body, user.username)

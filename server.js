@@ -10,7 +10,6 @@ module.exports = { io };
 
 const jwt = require('./app/helpers/jwt');
 const errorHandler = require('./app/helpers/error-handler');
-
 const playlistScheduler = require('./app/socket/playlistscheduler');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +29,6 @@ app.get('/socket-io', (req, res) => {
 });
 
 app.use('/api/users', require('./app/controllers/users.controller'));
-
 app.use('/api/songs', require('./app/controllers/songs.controller'));
 
 // catch all route
