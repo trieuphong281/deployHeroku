@@ -40,7 +40,7 @@ function playthePlaylist() {
     cron.scheduleJob(playlistSchedule[0], async function setPlaylistSchedule() {
         playlistSchedule[0].minute += 1;
         playlistSchedule[0].second = 0;
-        playlist = (await songService.getPlaylist()).message;
+        playlist = (await songService.getPlaylist());
         let remainingTime = 23400;
         for (let i = 1; i <= playlist.length; i++) {
             if (remainingTime - playlist[i - 1].duration <= 0)
