@@ -46,7 +46,7 @@ function playthePlaylist() {
             if (remainingTime - playlist[i - 1].duration <= 0)
                 break;
             const duration = playlist[i - 1].duration;
-            // const duration = 10;
+            // const duration = 30;
             const hour = (duration / 3600 | 0);
             const minute = ((duration - 3600 * hour) / 60 | 0);
             const sec = duration - 3600 * hour - 60 * minute;
