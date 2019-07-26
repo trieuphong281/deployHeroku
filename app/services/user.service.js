@@ -7,7 +7,6 @@ const User = db.User;
 module.exports = {
     authenticate,
     logout,
-    getAll,
     getById,
     create,
     update,
@@ -36,18 +35,12 @@ async function logout({ username }) {
         const user = await User.findOne({ username });
         user.token = null;
         await user.save();
-        console.log("Successfully Logout");
         return "Successfully Logout";
     } catch (error) {
-        console.log(error);
         return error;
     }
 }
 // processing
-async function getAll() {
-    return await User.find().select('-hash');
-}
-
 async function getById(id) {
     return await User.findById(id).select('-hash');
 }

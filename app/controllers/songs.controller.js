@@ -20,23 +20,24 @@ async function addToList(req, res) {
             .then(msg => {
                 if (msg.message === 'Sucessfully Added')
                     server.io.sockets.emit('playlist', "Song's been voted!");
-                res.status(msg.status).json(msg.message);
+                res.status(200).json({ message: msg });
             })
-            .catch(err => res.status(400).send(err));
+            .catch(err => res.status(400).json({ message: err }));
     } else {
         res.status(401).json({ message: "Invalid TOKEN!!!" });
     }
+
 }
 
 async function searchByQuery(req, res) {
     songService.searchSongs(req.params.searchingText, req.query.page)
-        .then(msg => res.status(msg.status).json(msg.message))
-        .catch(err => res.status(400).send(err));
+        .then(msg => res.status(200).json({ message: msg }))
+        .catch(err => res.status(400).json({ message: err }));
 }
 async function getSongById(req, res) {
     songService.getSong(req.params.id)
         .then(msg => res.status(msg.status).json(msg.message))
-        .catch(err => next(err));
+        .catch(err => res.status(400).json({ message: msg }));
 }
 async function votingSong(req, res) {   // upvote-downvote:true-false
     const user = await jwt.isValid(req);
@@ -45,9 +46,9 @@ async function votingSong(req, res) {   // upvote-downvote:true-false
             .then(msg => {
                 if (msg.message === 'Successfully voted')
                     server.io.sockets.emit('playlist', "Song's been voted!");
-                res.status(msg.status).json(msg.message);
+                res.status(200).json({ message: msg });
             })
-            .catch(err => res.status(400).send(err));
+            .catch(err => res.status(400).send({ message: err }));
     } else {
         res.status(401).json({ message: "Invalid TOKEN!!!" });
     }
@@ -55,8 +56,8 @@ async function votingSong(req, res) {   // upvote-downvote:true-false
 
 async function getPlayList(req, res) {
     songService.getPlaylist()
-        .then(msg => res.status(msg.status).json(msg.message))
-        .catch(err => res.status(400).send(err));
+        .then(msg => res.status(200).json({ message: msg }))
+        .catch(err => res.status(400).json({ message: err }));
 }
 
 

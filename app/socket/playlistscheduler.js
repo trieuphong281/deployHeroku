@@ -21,14 +21,14 @@ function serverSchedule() {
     playthePlaylist();
 }
 
-function resetDatabase() {
+async function resetDatabase() {
     const resetSchedule = new cron.RecurrenceRule();
     resetSchedule.hour = 23;
     resetSchedule.minute = 59;
     resetSchedule.second = 59;
     // cron.scheduleJob(resetSchedule, function resetDatabase() {
-    //     songService.resetSongCollection();
-    //     userService.resetUserCollection();
+    //     await songService.resetSongCollection();
+    //     await userService.resetUserCollection();
     // });
 }
 playlistSchedule[0] = new cron.RecurrenceRule();
