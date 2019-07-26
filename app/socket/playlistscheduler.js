@@ -12,7 +12,8 @@ let endTime;
 
 module.exports = {
     serverSchedule,
-    socketHandler
+    socketHandler,
+    pingHeroku
 };
 
 function serverSchedule() {
@@ -91,4 +92,9 @@ function socketHandler(socket) {
             socket.emit('play', currentSong);
         }
     }
+}
+function pingHeroku() {
+    setInterval(function () {
+        http.get("https://gorgeous-grand-teton-66654.herokuapp.com/api");
+    }, 1740000);
 }
