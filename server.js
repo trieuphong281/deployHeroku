@@ -40,7 +40,6 @@ app.all('*', (req, res) => {
 // global error handler
 app.use(errorHandler);
 // start server
-playlistScheduler.pingHeroku();
 playlistScheduler.serverSchedule();
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3000;
 server.listen(port, function () {

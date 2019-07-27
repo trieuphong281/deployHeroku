@@ -13,8 +13,7 @@ let endTime;
 
 module.exports = {
     serverSchedule,
-    socketHandler,
-    pingHeroku
+    socketHandler
 };
 
 function serverSchedule() {
@@ -79,9 +78,10 @@ function playthePlaylist() {
                 currentSong = playlist[i];
             });
         }
-        cron.scheduleJob(endTime, function () {
+        cron.scheduleJob(endTime, function endPlaylist() {
             server.io.sockets.emit('end', "Playlist has been completely played");
             currentSong = "All over";
+            pingHeroku();
         });
     })
 }
