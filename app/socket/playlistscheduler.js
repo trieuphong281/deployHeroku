@@ -7,6 +7,7 @@ const songService = require('../services/song.service');
 const userService = require('../services/user.service');
 const scheduledTime = require('../configs/config.json').scheduledTime;
 const timeComparer = require('../helpers/timechecker');
+const http = require('http');
 let playlist;
 let endTime;
 
@@ -98,3 +99,8 @@ function pingHeroku() {
         http.get("https://gorgeous-grand-teton-66654.herokuapp.com/api");
     }, 1740000);
 }
+// function pingHeroku() {
+//     setInterval(function () {
+//         http.get("http://localhost:3000/api");
+//     }, 30000);
+// }
