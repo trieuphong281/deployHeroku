@@ -41,6 +41,7 @@ app.all('*', (req, res) => {
 app.use(errorHandler);
 // start server
 playlistScheduler.serverSchedule();
+playlistScheduler.pingHeroku();
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3000;
 server.listen(port, function () {
     console.log('Server listening on port ' + port);

@@ -13,7 +13,8 @@ let endTime;
 
 module.exports = {
     serverSchedule,
-    socketHandler
+    socketHandler,
+    pingHeroku
 };
 
 function serverSchedule() {
@@ -81,7 +82,6 @@ function playthePlaylist() {
         cron.scheduleJob(endTime, function endPlaylist() {
             server.io.sockets.emit('end', "Playlist has been completely played");
             currentSong = "All over";
-            pingHeroku();
         });
     })
 }
@@ -96,7 +96,7 @@ function socketHandler(socket) {
 }
 function pingHeroku() {
     setInterval(function () {
-        http.get("https://gorgeous-grand-teton-66654.herokuapp.com/api");
+        http.get("http://gorgeous-grand-teton-66654.herokuapp.com/api");
     }, 1740000);
 }
 // function pingHeroku() {
