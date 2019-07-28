@@ -21,7 +21,7 @@ app.use(jwt.jwt());
 
 // api routes
 app.get('/api', (req, res) => {
-    res.send({ msg: 'Hello! Server is up and running' });
+    res.send({ message: 'Hello! Server is up and running' });
 });
 //socket io test routes
 app.get('/socket-io', (req, res) => {
