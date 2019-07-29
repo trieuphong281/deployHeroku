@@ -27,10 +27,10 @@ async function resetDatabase() {
     resetSchedule.hour = 23;
     resetSchedule.minute = 59;
     resetSchedule.second = 59;
-    // cron.scheduleJob(resetSchedule, function resetDatabase() {
-    //     await songService.resetSongCollection();
-    //     await userService.resetUserCollection();
-    // });
+    cron.scheduleJob(resetSchedule, async function resetDatabase() {
+        // await songService.resetSongCollection();
+        await userService.resetUserCollection();
+    });
 }
 playlistSchedule[0] = new cron.RecurrenceRule();
 playlistSchedule[0].hour = scheduledTime.hour;

@@ -18,9 +18,9 @@ function jwt() {
             '/api/users/register',
             '/api',
             '/api/songs/get/list',
-            '/api/songs/remove',            
-            '/api/songs/playlist',   
-            '/socket-io',  
+            '/api/songs/remove',
+            '/api/songs/playlist',
+            '/socket-io',
             /^\/api\/songs\/search\/.*/,
             /^\/api\/songs\/get\/.*/
         ]
@@ -34,16 +34,16 @@ async function isRevoked(req, payload, done) {
         return done(null, true);
     }
     done();
-};
+}
 
 async function isValid(req) {
     try {
-    var token = req.headers.authorization.split('Bearer ')[1];
+        var token = req.headers.authorization.split('Bearer ')[1];
         const user = await User.findOne({ token });
         if (user.token) {
             return user;
         }
-    } catch {
+    } catch (error) {
         return null;
     }
 }

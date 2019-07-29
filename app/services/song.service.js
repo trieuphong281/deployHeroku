@@ -118,7 +118,7 @@ async function getSong(videoId) {
                 title: videoItem.snippet.title,
                 channelTitle: videoItem.snippet.channelTitle,
                 thumbnails: videoItem.snippet.thumbnails.medium.url,
-                duration: convert_time(videoItem.contentDetails.duration)
+                duration: convertTime(videoItem.contentDetails.duration)
             });
             return {
                 status: 200,
@@ -204,13 +204,13 @@ async function resetSongCollection() {
     try {
         await Song.deleteMany({});
         return {
-            status: ok,
+            status: "ok",
             message: "Successfully Reset Song!!!"
         };
     }
     catch (error) {
         return {
-            status: failed,
+            status: "failed",
             message: error
         };
     }

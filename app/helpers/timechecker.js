@@ -1,6 +1,5 @@
 const scheduledTime = require('../configs/config.json').scheduledTime;
 const moment = require('moment');
-const cron = require('node-schedule');
 module.exports = {
     isAfterScheduledTime,
     isAfterASchedule

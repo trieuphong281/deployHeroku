@@ -37,7 +37,7 @@ async function searchByQuery(req, res) {
 async function getSongById(req, res) {
     songService.getSong(req.params.id)
         .then(msg => res.status(msg.status).json(msg.message))
-        .catch(err => res.status(400).json({ message: msg }));
+        .catch(err => res.status(400).json({ message: err }));
 }
 async function votingSong(req, res) {   // upvote-downvote:true-false
     const user = await jwt.isValid(req);

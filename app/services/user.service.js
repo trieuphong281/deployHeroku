@@ -37,7 +37,7 @@ async function logout({ username }) {
         await user.save();
         return "Successfully Logout";
     } catch (error) {
-        return error;
+        throw error;
     }
 }
 // processing
