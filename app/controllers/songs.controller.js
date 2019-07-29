@@ -18,7 +18,7 @@ async function addToList(req, res) {
     if (user) {
         songService.addSongToList(req.body, user.username)
             .then(msg => {
-                if (msg.message === 'Sucessfully Added')
+                if (msg === 'Sucessfully Added')
                     server.io.sockets.emit('playlist', "Song's been voted!");
                 res.status(200).json({ message: msg });
             })
@@ -44,7 +44,7 @@ async function votingSong(req, res) {   // upvote-downvote:true-false
     if (user) {
         songService.voteASong(req.body, user.username)
             .then(msg => {
-                if (msg.message === 'Successfully voted')
+                if (msg === 'Successfully voted')
                     server.io.sockets.emit('playlist', "Song's been voted!");
                 res.status(200).json({ message: msg });
             })

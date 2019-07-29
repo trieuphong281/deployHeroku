@@ -95,7 +95,7 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
         }
     }
     catch (error) {
-        return error;
+        throw error;
     }
 }
 async function getSong(videoId) {
