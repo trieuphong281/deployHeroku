@@ -48,7 +48,10 @@ async function getById(id) {
 async function create(userParam) {
     // validate
     if (await User.findOne({ username: userParam.username })) {
-        throw 'Username "' + userParam.username + '" is already taken';
+        throw `Username is already taken`;
+    }
+    if (await User.findOne({ email: userParam.email })) {
+        throw `Email is already taken`;
     }
 
     const user = new User(userParam);
@@ -84,7 +87,7 @@ async function changepassword(userParam, id) {
     const user = await User.findById(id);
     // validate
     if (!user) throw 'User not found';
-    if (!bcrypt.compareSync(userParam.oldPassword,user.hash))
+    if (!bcrypt.compareSync(userParam.oldPassword, user.hash))
         throw 'Old password is incorrect';
     user.hash = bcrypt.hashSync(userParam.newPassword, 10);
     await user.save();

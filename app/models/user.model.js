@@ -4,30 +4,30 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     username: {
         type: String,
-        unique: true,
+        unique: [true, 'email is taken'],
         trim: true,
-        required: true
+        required: [true, 'username is required!']
     },
     hash: {
         type: String,
-        required: true
+        required: [true, 'hash is required!']
     },
     firstName: {
         type: String,
         trim: true,
-        required: true
+        required: [true, 'firstName is required!']
     },
     lastName: {
         type: String,
         trim: true,
-        required: true
+        required: [true, 'lastName is required!']
     },
     email: {
         type: String,
-        unique: true,
+        unique: [true, 'email is taken'],
         lowercase: true,
         trim: true,
-        required: true
+        required: [true, 'email is required!']
     },
     vote: {
         type: Number,
@@ -42,7 +42,7 @@ const schema = new Schema({
         default: Date.now
     },
     token: {
-        default : null,
+        default: null,
         type: String,
     }
 
