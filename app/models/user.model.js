@@ -8,9 +8,9 @@ const schema = new Schema({
         trim: true,
         required: [true, 'username is required!']
     },
-    hash: {
+    password: {
         type: String,
-        required: [true, 'hash is required!']
+        required: [true, 'password is required!']
     },
     firstName: {
         type: String,
