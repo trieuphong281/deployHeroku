@@ -53,6 +53,13 @@ async function create(userParam) {
     if (await User.findOne({ email: userParam.email })) {
         throw 'Email ' + userParam.email + ' is already taken';
     }
+    const checkString = JSON.stringify({
+        username: userParam.username,
+        password: userParam.password
+    });
+    if (/\s/.test(checkString)) {
+        throw 'Input contains space';
+    }
     const user = new User(userParam);
     // hash password
     if (userParam.password) {
