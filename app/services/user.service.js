@@ -48,19 +48,16 @@ async function getById(id) {
 async function create(userParam) {
     // validate
     if (await User.findOne({ username: userParam.username })) {
-        throw `Username is already taken`;
+        throw 'Username ' + userParam.username + ' is already taken!';
     }
     if (await User.findOne({ email: userParam.email })) {
-        throw `Email is already taken`;
+        throw 'Email ' + userParam.email + ' is already taken';
     }
-
     const user = new User(userParam);
-
     // hash password
     if (userParam.password) {
         user.hash = bcrypt.hashSync(userParam.password, 10);
     }
-
     // save user
     await user.save();
 }
@@ -70,7 +67,7 @@ async function update(userParam, id) {
     // validate
     if (!user) throw 'User not found';
     if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {
-        throw 'Username ' + userParam.username + ' is already taken';
+        throw 'Username ' + userParam.username + ' is already taken!';
     }
     if (user.email !== userParam.email && await User.findOne({ email: userParam.email })) {
         throw 'Email ' + userParam.email + ' is already taken';
@@ -88,9 +85,10 @@ async function changepassword(userParam, id) {
     // validate
     if (!user) throw 'User not found';
     if (!bcrypt.compareSync(userParam.oldPassword, user.hash))
-        throw 'Old password is incorrect';
+        throw 'Old password is not correct!';
     user.hash = bcrypt.hashSync(userParam.newPassword, 10);
     await user.save();
+    return 'Password successfully updated!';
 }
 
 async function _delete(id) {
@@ -105,4 +103,5 @@ async function resetUserCollection() {
             user.save();
         })
     });
+    return 'Successfully Reset Users!';
 }

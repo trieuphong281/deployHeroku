@@ -19,7 +19,7 @@ module.exports = {
 async function addSongToList({ id }, username) {
     const user = await User.findOne({ username });
     if (user.songAdd === 0) {
-        throw 'Already used Add';
+        throw 'Already used Add function!';
     } else {
         let service = google.youtube('v3');
         try {
@@ -30,7 +30,7 @@ async function addSongToList({ id }, username) {
             });
             let videoItem = searchResults.data.items[0];
             if (videoItem.length == 0) {
-                return 'No video found';
+                return 'No video found!';
             } else {
                 let song = new Song({
                     videoId: videoItem.id,
@@ -43,7 +43,7 @@ async function addSongToList({ id }, username) {
                 await song.save();
                 user.songAdd = 0;
                 await user.save();
-                return 'Sucessfully Added';
+                return 'Sucessfully Added!';
             }
         }
         catch (error) {
@@ -66,7 +66,7 @@ async function searchSongs(searchName, pagesToken) {
         });
         let videolist = searchResults.data.items;
         if (videolist.length == 0) {
-            return 'No video found';
+            return 'No video found!';
         } else {
             const filteredListVideo = await filterVideoResult(videolist);
             return {
@@ -88,10 +88,10 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
         if (votingUser.vote > 0) {
             await Song.findOneAndUpdate({ _id: mongoose.Types.ObjectId(video_id) }, { $inc: isUpvote === true ? { upvote: 1 } : { downvote: 1 } });
             await User.findOneAndUpdate({ username: username }, { $inc: { vote: -1 } });
-            return `Successfully voted`;
+            return `Successfully voted!`;
         }
         else {
-            throw 'Out of vote!!!';
+            throw 'Out of vote!';
         }
     }
     catch (error) {
