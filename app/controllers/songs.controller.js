@@ -7,7 +7,6 @@ const isDisable = require('../helpers/timechecker').isAfterScheduledTime;
 // routes
 router.get('/search/:searchingText', isDisable, searchByQuery);
 router.get('/playlist', getPlayList);
-router.get('/get/:id', isDisable, getSongById);
 router.post('/add/', isDisable, addToList);
 router.post('/vote/', isDisable, votingSong);
 
@@ -34,11 +33,7 @@ async function searchByQuery(req, res) {
         .then(msg => res.status(200).json({ message: msg }))
         .catch(err => res.status(400).json({ message: err }));
 }
-async function getSongById(req, res) {
-    songService.getSong(req.params.id)
-        .then(msg => res.status(msg.status).json(msg.message))
-        .catch(err => res.status(400).json({ message: err }));
-}
+
 async function votingSong(req, res) {   // upvote-downvote:true-false
     const user = await jwt.isValid(req);
     if (user) {

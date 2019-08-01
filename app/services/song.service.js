@@ -11,7 +11,6 @@ module.exports = {
     searchSongs,
     voteASong,
     getPlaylist,
-    getSong,
     isAfterScheduleTime,
     resetSongCollection
 };
@@ -96,41 +95,6 @@ async function voteASong({ video_id, isUpvote }, username) {   // video_id : id 
     }
     catch (error) {
         throw error;
-    }
-}
-async function getSong(videoId) {
-    let service = google.youtube('v3');
-    try {
-        const searchResults = await service.videos.list({
-            auth: config.youtubeApiKEY,
-            part: 'snippet,contentDetails',
-            id: videoId
-        });
-        if (searchResults.data.items.length === 0) {
-            return {
-                status: 200,
-                message: 'No Video Found'
-            };
-        } else {
-            let videoItem = searchResults.data.items[0];
-            let song = new Song({
-                videoId: videoItem.id,
-                title: videoItem.snippet.title,
-                channelTitle: videoItem.snippet.channelTitle,
-                thumbnails: videoItem.snippet.thumbnails.medium.url,
-                duration: convertTime(videoItem.contentDetails.duration)
-            });
-            return {
-                status: 200,
-                message: song
-            }
-        }
-    }
-    catch (error) {
-        return {
-            status: 400,
-            message: "Error in search API " + error
-        };
     }
 }
 
